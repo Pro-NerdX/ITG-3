@@ -5,6 +5,8 @@ import org.example.utils.Global
 abstract class Gate {
     val id: Int = Global.getGateId()
 
+    var flag = false
+
     /**
      * @brief see "Übung 8-133"
      */
