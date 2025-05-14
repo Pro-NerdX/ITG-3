@@ -22,4 +22,25 @@ class ObserverPatternTests {
             }
         }
     }
+
+    @Test
+    fun testWithInitialSelection111() {
+        val sendHelp = listOf(true, false)
+        for (a in sendHelp) {
+            for (b in sendHelp) {
+                for (cIn in sendHelp) {
+                    val actualResult: Pair<Boolean, Boolean> = FullAdder.simulateWithInitial111(a, b, cIn)
+                    val inputList = listOf(a, b, cIn)
+                    val expectedResult = when (inputList.count{ it }) {
+                        0 -> Pair(false, false)
+                        1 -> Pair(true, false)
+                        2 -> Pair(false, true)
+                        3 -> Pair(true, true)
+                        else -> throw IllegalStateException("testRandomizedSelection: unreachable code reached!")
+                    }
+                    assert(actualResult == expectedResult)
+                }
+            }
+        }
+    }
 }

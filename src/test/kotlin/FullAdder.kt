@@ -5,6 +5,10 @@ import org.example.utils.Wire
 
 object FullAdder {
     fun simulate(a: Boolean, b: Boolean, cIn: Boolean): Pair<Boolean, Boolean> {
+        return this.sim(a, b, cIn, false)
+    }
+
+    fun sim(a: Boolean, b: Boolean, cIn: Boolean, flag: Boolean): Pair<Boolean, Boolean> {
         val aWire = Wire(false, mutableListOf())
         val bWire = Wire(false, mutableListOf())
         val cInWire = Wire(false, mutableListOf())
@@ -40,11 +44,22 @@ object FullAdder {
         secondAndOutWire.connectedGates.add(carryOutOR)
         thirdAndOutWire.connectedGates.add(carryOutOR)
 
+        // flag handling
+        if (flag) {
+            aWire.setVoltage(true)
+            bWire.setVoltage(true)
+            cInWire.setVoltage(true)
+        }
+
         // execution
         aWire.setVoltage(a)
         bWire.setVoltage(b)
         cInWire.setVoltage(cIn)
 
         return Pair(sWire.getVoltage(), cOutWire.getVoltage())
+    }
+
+    fun simulateWithInitial111(a: Boolean, b: Boolean, cIn: Boolean): Pair<Boolean, Boolean> {
+        return this.sim(a, b, cIn, true)
     }
 }
