@@ -3,7 +3,6 @@ package org.example
 import org.example.gates.AND
 import org.example.gates.OR
 import org.example.gates.XOR
-import org.example.utils.Global
 import org.example.utils.Wire
 
 /**
@@ -56,16 +55,26 @@ fun main() {
     thirdAndOutWire.connectedGates.add(carryOutOR)
 
     // start simulation
-    val a = true
-    val b = true
-    val cIn = true
-    aWire.setVoltage(a)
-    bWire.setVoltage(b)
-    cInWire.setVoltage(cIn)
 
-    // output
-    val s = sWire.getVoltage()
-    val cOut = cOutWire.getVoltage()
+    // outputs
+    println(" a | b | c_in || sum | c_out ")
+    println("---|---|------||-----|-------")
+    val sendHelp = listOf(false, true)
+    for (aTemp: Boolean in sendHelp) {
+        for (bTemp: Boolean in sendHelp) {
+            for (cInTemp: Boolean in sendHelp) {
+                aWire.setVoltage(aTemp)
+                bWire.setVoltage(bTemp)
+                cInWire.setVoltage(cInTemp)
 
-    print("sum: $s\t|\tcarry_out: $cOut")
+                val s = sWire.getVoltage()
+                val cOut = cOutWire.getVoltage()
+                println(" ${boolToInt(aTemp)} | ${boolToInt(bTemp)} |   ${boolToInt(cInTemp)}  ||  ${boolToInt(s)}  |   ${boolToInt(cOut)}   ")
+            }
+        }
+    }
+}
+
+fun boolToInt(bool: Boolean): Int {
+    return if (bool) 1 else 0
 }
