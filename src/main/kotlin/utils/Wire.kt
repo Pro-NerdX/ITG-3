@@ -9,7 +9,6 @@ class Wire(
     val id: Int = Global.getWireId()
 
     fun setVoltage(volt: Boolean) {
-        if (this.voltage == volt) return
         this.voltage = volt
         this.connectedGates.forEach {
             it.operator()
