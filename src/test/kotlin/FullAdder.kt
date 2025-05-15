@@ -16,33 +16,21 @@ object FullAdder {
         // put all of them in ternary XOR-gate for output s
         val sWire = Wire(false, mutableListOf())
         val sumXOR = XOR(aWire, bWire, cInWire, sWire)
-        aWire.connectedGates.add(sumXOR)
-        bWire.connectedGates.add(sumXOR)
-        cInWire.connectedGates.add(sumXOR)
 
         // (a ^ b) v (a ^ cIn) v (b ^ cIn)
         // AND-gates
         val firstAndOutWire = Wire(false, mutableListOf())
         val firstAND = AND(aWire, bWire, null, firstAndOutWire)
-        aWire.connectedGates.add(firstAND)
-        bWire.connectedGates.add(firstAND)
 
         val secondAndOutWire = Wire(false, mutableListOf())
         val secondAND = AND(aWire, cInWire, null, secondAndOutWire)
-        aWire.connectedGates.add(secondAND)
-        cInWire.connectedGates.add(secondAND)
 
         val thirdAndOutWire = Wire(false, mutableListOf())
         val thirdAND = AND(bWire, cInWire, null, thirdAndOutWire)
-        bWire.connectedGates.add(thirdAND)
-        cInWire.connectedGates.add(thirdAND)
 
         // OR-gates
         val cOutWire = Wire(false, mutableListOf())
         val carryOutOR = OR(firstAndOutWire, secondAndOutWire, thirdAndOutWire, cOutWire)
-        firstAndOutWire.connectedGates.add(carryOutOR)
-        secondAndOutWire.connectedGates.add(carryOutOR)
-        thirdAndOutWire.connectedGates.add(carryOutOR)
 
         // flag handling
         if (flag) {
