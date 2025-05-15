@@ -60,3 +60,20 @@ class NOT(
         this.out.setVoltage(!this.out.getVoltage())
     }
 }
+
+class NAND(
+    val in1: Wire,
+    val in2: Wire,
+    val out: Wire
+): Gate() {
+    init {
+        in1.connectedGates.add(this)
+        in2.connectedGates.add(this)
+    }
+
+    override fun operator() {
+        val newState: Boolean = !(in1.getVoltage() && in2.getVoltage())
+        if (newState == out.getVoltage()) return
+        this.out.setVoltage(!this.out.getVoltage())
+    }
+}
