@@ -13,8 +13,14 @@ class AND(
     in3: Wire? = Global.trueWire,
     out: Wire
 ): TernaryGate(in1, in2, in3, out) {
+    init {
+        Global.allActiveGates.add(this)
+    }
 
     override fun operator() {
+        if (flag) return
+        this.flag = true
+
         val newState: Boolean = this.in1.getVoltage() && this.in2.getVoltage() && (this.in3?.getVoltage() ?: true)
         if (newState == out.getVoltage()) return
         this.out.setVoltage(newState)
@@ -27,7 +33,14 @@ class OR(
     in3: Wire? = Global.falseWire,
     out: Wire
 ): TernaryGate(in1, in2, in3, out) {
+    init {
+        Global.allActiveGates.add(this)
+    }
+
     override fun operator() {
+        if (flag) return
+        this.flag = true
+
         val newState: Boolean = this.in1.getVoltage() || this.in2.getVoltage() || (this.in3?.getVoltage() ?: false)
         if (newState == out.getVoltage()) return
         this.out.setVoltage(newState)
@@ -40,7 +53,14 @@ class XOR(
     in3: Wire? = Global.falseWire,
     out: Wire
 ): TernaryGate(in1, in2, in3, out) {
+    init {
+        Global.allActiveGates.add(this)
+    }
+
     override fun operator() {
+        if (flag) return
+        this.flag = true
+
         val sendHelp1: Boolean = (this.in1.getVoltage() || this.in2.getVoltage()) &&
                 !(this.in1.getVoltage() && this.in2.getVoltage())
         val sendHelp2: Boolean = in3?.getVoltage() ?: false
@@ -54,7 +74,14 @@ class NOT(
     in1: Wire,
     out: Wire
 ): UnaryGate(in1, out) {
+    init {
+        Global.allActiveGates.add(this)
+    }
+
     override fun operator() {
+        if (flag) return
+        this.flag = true
+
         val newState: Boolean = !this.out.getVoltage()
         if (newState == out.getVoltage()) return
         this.out.setVoltage(!this.out.getVoltage())
@@ -69,11 +96,16 @@ class NAND(
     init {
         in1.connectedGates.add(this)
         in2.connectedGates.add(this)
+
+        Global.allActiveGates.add(this)
     }
 
     override fun operator() {
+        if (flag) return
+        this.flag = true
+
         val newState: Boolean = !(in1.getVoltage() && in2.getVoltage())
         if (newState == out.getVoltage()) return
-        this.out.setVoltage(!this.out.getVoltage())
+        this.out.setVoltage(newState)
     }
 }

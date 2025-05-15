@@ -1,5 +1,8 @@
 package org.example.utils
 
+/**
+ * period == 2 causes the clock to change every tick
+ */
 class Clock(
     val period: Int
 ) {

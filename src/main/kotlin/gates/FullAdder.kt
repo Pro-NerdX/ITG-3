@@ -1,5 +1,6 @@
 package org.example.gates
 
+import org.example.utils.Global
 import org.example.utils.Wire
 
 class FullAdder(
@@ -9,12 +10,6 @@ class FullAdder(
     val sWire: Wire,
     val cOutWire: Wire
 ): Gate() {
-    init {
-        aWire.connectedGates.add(this)
-        bWire.connectedGates.add(this)
-        cInWire.connectedGates.add(this)
-    }
-
     // wires in between
     private val firstAndOutWire = Wire(false, mutableListOf())
     private val secondAndOutWire = Wire(false, mutableListOf())
@@ -31,6 +26,12 @@ class FullAdder(
     private val thirdAND = AND(bWire, cInWire, null, thirdAndOutWire)
     // OR-gate
     private val carryOutOR = OR(firstAndOutWire, secondAndOutWire, thirdAndOutWire, cOutWire)
+
+    init {
+        aWire.connectedGates.add(this)
+        bWire.connectedGates.add(this)
+        cInWire.connectedGates.add(this)
+    }
 
     /**
      * Inputs in the following order:

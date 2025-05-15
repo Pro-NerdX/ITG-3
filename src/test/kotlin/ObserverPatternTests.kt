@@ -1,4 +1,5 @@
 import org.example.gates.FullAdder
+import org.example.utils.Global
 import org.example.utils.Wire
 import kotlin.test.Test
 
@@ -11,14 +12,21 @@ class ObserverPatternTests {
     val cOutWire = Wire(false, mutableListOf())
     val fullAdder = FullAdder(aWire, bWire, cInWire, sWire, cOutWire)
 
+    init {
+        Global.allActiveGates.add(fullAdder)
+    }
+
     @Test
     fun testRandomizedSelection() {
         val sendHelp = listOf(true, false)
         for (a in sendHelp.shuffled()) {
             for (b in sendHelp.shuffled()) {
                 for (cIn in sendHelp.shuffled()) {
+                    Global.resetFlags()
                     fullAdder.aWire.setVoltage(a)
+                    Global.resetFlags()
                     fullAdder.bWire.setVoltage(b)
+                    Global.resetFlags()
                     fullAdder.cInWire.setVoltage(cIn)
 
                     val actualResult: Pair<Boolean, Boolean> = Pair(
@@ -41,16 +49,22 @@ class ObserverPatternTests {
 
     @Test
     fun testWithInitialSelection111() {
+        Global.resetFlags()
         fullAdder.aWire.setVoltage(true)
+        Global.resetFlags()
         fullAdder.bWire.setVoltage(true)
+        Global.resetFlags()
         fullAdder.cInWire.setVoltage(true)
 
         val sendHelp = listOf(true, false)
         for (a in sendHelp) {
             for (b in sendHelp) {
                 for (cIn in sendHelp) {
+                    Global.resetFlags()
                     fullAdder.aWire.setVoltage(a)
+                    Global.resetFlags()
                     fullAdder.bWire.setVoltage(b)
+                    Global.resetFlags()
                     fullAdder.cInWire.setVoltage(cIn)
 
                     val actualResult: Pair<Boolean, Boolean> = Pair(

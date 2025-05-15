@@ -1,5 +1,7 @@
 package org.example.utils
 
+import org.example.gates.Gate
+
 object Global {
     private var gateIdCounter: Int = 0
     private var wireIdCounter: Int = 0
@@ -7,6 +9,8 @@ object Global {
 
     val falseWire = Wire(false, mutableListOf())
     val trueWire = Wire(true, mutableListOf())
+
+    val allActiveGates: MutableList<Gate> = mutableListOf()
 
     fun getGateId(): Int {
         val sendHelp: Int = this.gateIdCounter
@@ -24,5 +28,11 @@ object Global {
         val sendHelp: Int = this.regIdCounter
         this.regIdCounter++
         return sendHelp
+    }
+
+    fun resetFlags() {
+        this.allActiveGates.forEach {
+            it.flag = false
+        }
     }
 }
