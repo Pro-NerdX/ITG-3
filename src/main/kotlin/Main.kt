@@ -3,7 +3,6 @@ package org.example
 import org.example.gates.AND
 import org.example.gates.OR
 import org.example.gates.XOR
-import org.example.utils.Clock
 import org.example.utils.Wire
 
 /**

@@ -8,11 +8,12 @@ import org.example.utils.Wire
  */
 
 class AND(
-    val in1: Wire,
-    val in2: Wire,
-    val in3: Wire? = Global.trueWire,
-    val out: Wire
-): Gate() {
+    in1: Wire,
+    in2: Wire,
+    in3: Wire? = Global.trueWire,
+    out: Wire
+): TernaryGate(in1, in2, in3, out) {
+
     override fun operator() {
         val newState: Boolean = this.in1.getVoltage() && this.in2.getVoltage() && (this.in3?.getVoltage() ?: true)
         if (newState == out.getVoltage()) return
@@ -21,11 +22,11 @@ class AND(
 }
 
 class OR(
-    val in1: Wire,
-    val in2: Wire,
-    val in3: Wire? = Global.falseWire,
-    val out: Wire
-): Gate() {
+    in1: Wire,
+    in2: Wire,
+    in3: Wire? = Global.falseWire,
+    out: Wire
+): TernaryGate(in1, in2, in3, out) {
     override fun operator() {
         val newState: Boolean = this.in1.getVoltage() || this.in2.getVoltage() || (this.in3?.getVoltage() ?: false)
         if (newState == out.getVoltage()) return
@@ -34,11 +35,11 @@ class OR(
 }
 
 class XOR(
-    val in1: Wire,
-    val in2: Wire,
-    val in3: Wire? = Global.falseWire,
-    val out: Wire
-): Gate() {
+    in1: Wire,
+    in2: Wire,
+    in3: Wire? = Global.falseWire,
+    out: Wire
+): TernaryGate(in1, in2, in3, out) {
     override fun operator() {
         val sendHelp1: Boolean = (this.in1.getVoltage() || this.in2.getVoltage()) &&
                 !(this.in1.getVoltage() && this.in2.getVoltage())
@@ -50,11 +51,12 @@ class XOR(
 }
 
 class NOT(
-    val in1: Wire,
-    val out: Wire
-): Gate() {
+    in1: Wire,
+    out: Wire
+): UnaryGate(in1, out) {
     override fun operator() {
-        // Note: Check for change not necessary, as gate won't be notified if [in1] doesn't change.
-        this.out.setVoltage(!this.in1.getVoltage())
+        val newState: Boolean = !this.out.getVoltage()
+        if (newState == out.getVoltage()) return
+        this.out.setVoltage(!this.out.getVoltage())
     }
 }
