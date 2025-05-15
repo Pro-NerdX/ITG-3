@@ -1,6 +1,15 @@
+import org.example.gates.FullAdder
+import org.example.utils.Wire
 import kotlin.test.Test
 
 class ObserverPatternTests {
+
+    val aWire = Wire(false, mutableListOf())
+    val bWire = Wire(false, mutableListOf())
+    val cInWire = Wire(false, mutableListOf())
+    val sWire = Wire(false, mutableListOf())
+    val cOutWire = Wire(false, mutableListOf())
+    val fullAdder = FullAdder(aWire, bWire, cInWire, sWire, cOutWire)
 
     @Test
     fun testRandomizedSelection() {
@@ -8,7 +17,14 @@ class ObserverPatternTests {
         for (a in sendHelp.shuffled()) {
             for (b in sendHelp.shuffled()) {
                 for (cIn in sendHelp.shuffled()) {
-                    val actualResult: Pair<Boolean, Boolean> = FullAdder.simulate(a, b, cIn)
+                    fullAdder.aWire.setVoltage(a)
+                    fullAdder.bWire.setVoltage(b)
+                    fullAdder.cInWire.setVoltage(cIn)
+
+                    val actualResult: Pair<Boolean, Boolean> = Pair(
+                        fullAdder.sWire.getVoltage(),
+                        fullAdder.cOutWire.getVoltage()
+                    )
                     val inputList = listOf(a, b, cIn)
                     val expectedResult = when (inputList.count{ it }) {
                         0 -> Pair(false, false)
@@ -25,11 +41,22 @@ class ObserverPatternTests {
 
     @Test
     fun testWithInitialSelection111() {
+        fullAdder.aWire.setVoltage(true)
+        fullAdder.bWire.setVoltage(true)
+        fullAdder.cInWire.setVoltage(true)
+
         val sendHelp = listOf(true, false)
         for (a in sendHelp) {
             for (b in sendHelp) {
                 for (cIn in sendHelp) {
-                    val actualResult: Pair<Boolean, Boolean> = FullAdder.simulateWithInitial111(a, b, cIn)
+                    fullAdder.aWire.setVoltage(a)
+                    fullAdder.bWire.setVoltage(b)
+                    fullAdder.cInWire.setVoltage(cIn)
+
+                    val actualResult: Pair<Boolean, Boolean> = Pair(
+                        fullAdder.sWire.getVoltage(),
+                        fullAdder.cOutWire.getVoltage()
+                    )
                     val inputList = listOf(a, b, cIn)
                     val expectedResult = when (inputList.count{ it }) {
                         0 -> Pair(false, false)

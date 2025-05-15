@@ -1,6 +1,7 @@
 package org.example
 
 import org.example.gates.AND
+import org.example.gates.FullAdder
 import org.example.gates.OR
 import org.example.gates.XOR
 import org.example.utils.Wire
@@ -9,40 +10,15 @@ import org.example.utils.Wire
  * @brief here goes the implementation of the full-adder
  */
 fun main() {
-    /*
-    Inputs in the following order:
-    a := 1st summand
-    b := 2nd summand
-    cIn := carry bit
-
-    Outputs:
-    s := sum
-    cOut := carry bit
-     */
+    // Wires
     val aWire = Wire(false, mutableListOf())
     val bWire = Wire(false, mutableListOf())
     val cInWire = Wire(false, mutableListOf())
-
-    // put all of them in ternary XOR-gate for output s
     val sWire = Wire(false, mutableListOf())
-    val sumXOR = XOR(aWire, bWire, cInWire, sWire)
-
-    // (a ^ b) v (a ^ cIn) v (b ^ cIn)
-    // AND-gates
-    val firstAndOutWire = Wire(false, mutableListOf())
-    val firstAND = AND(aWire, bWire, null, firstAndOutWire)
-
-    val secondAndOutWire = Wire(false, mutableListOf())
-    val secondAND = AND(aWire, cInWire, null, secondAndOutWire)
-
-    val thirdAndOutWire = Wire(false, mutableListOf())
-    val thirdAND = AND(bWire, cInWire, null, thirdAndOutWire)
-
-    // OR-gates
     val cOutWire = Wire(false, mutableListOf())
-    val carryOutOR = OR(firstAndOutWire, secondAndOutWire, thirdAndOutWire, cOutWire)
 
-    // start simulation
+    // Full-adder
+    val fullAdder = FullAdder(aWire, bWire, cInWire, sWire, cOutWire)
 
     // outputs
     println(" a | b | c_in || sum | c_out ")
@@ -51,12 +27,12 @@ fun main() {
     for (aTemp: Boolean in sendHelp) {
         for (bTemp: Boolean in sendHelp) {
             for (cInTemp: Boolean in sendHelp) {
-                aWire.setVoltage(aTemp)
-                bWire.setVoltage(bTemp)
-                cInWire.setVoltage(cInTemp)
+                fullAdder.aWire.setVoltage(aTemp)
+                fullAdder.bWire.setVoltage(bTemp)
+                fullAdder.cInWire.setVoltage(cInTemp)
 
-                val s = sWire.getVoltage()
-                val cOut = cOutWire.getVoltage()
+                val s = fullAdder.sWire.getVoltage()
+                val cOut = fullAdder.cOutWire.getVoltage()
                 println(" ${boolToInt(aTemp)} | ${boolToInt(bTemp)} |   ${boolToInt(cInTemp)}  ||  ${boolToInt(s)}  |   ${boolToInt(cOut)}   ")
             }
         }
