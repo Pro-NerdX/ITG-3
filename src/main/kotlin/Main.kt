@@ -1,9 +1,6 @@
 package org.example
 
-import org.example.gates.AND
 import org.example.gates.FullAdder
-import org.example.gates.OR
-import org.example.gates.XOR
 import org.example.utils.Global
 import org.example.utils.Wire
 
@@ -29,11 +26,8 @@ fun main() {
     for (aTemp: Boolean in sendHelp) {
         for (bTemp: Boolean in sendHelp) {
             for (cInTemp: Boolean in sendHelp) {
-                Global.resetFlags()
                 fullAdder.aWire.setVoltage(aTemp)
-                Global.resetFlags()
                 fullAdder.bWire.setVoltage(bTemp)
-                Global.resetFlags()
                 fullAdder.cInWire.setVoltage(cInTemp)
 
                 val s = fullAdder.sWire.getVoltage()

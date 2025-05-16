@@ -1,6 +1,5 @@
 package org.example.gates
 
-import org.example.utils.Global
 import org.example.utils.Wire
 
 class FullAdder(

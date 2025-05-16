@@ -13,9 +13,19 @@ class Wire(
         this.connectedGates.forEach {
             it.operator()
         }
+        Global.resetFlags()
     }
 
     fun getVoltage(): Boolean {
         return this.voltage
+    }
+
+    override fun hashCode(): Int {
+        return this.id
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Wire) return false
+        return this.id == other.id
     }
 }
