@@ -20,9 +20,6 @@ class RSLatch(
     }
 
     override fun operator() {
-        if (flag) return
-        this.flag = true
-
         q.setVoltage(rSideNAND.out.getVoltage())
         notQ.setVoltage(sSideNAND.out.getVoltage())
     }
